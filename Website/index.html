@@ -1,0 +1,570 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MS Nordic Automation | GenAI Document Automation</title>
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- GSAP & Lenis -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/gh/studio-freight/lenis@1.0.29/bundled/lenis.min.js"></script>
+
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+            display: ['Space Grotesk', 'sans-serif'],
+          },
+          colors: {
+            dark: '#050505',
+            accent: '#3b82f6',
+            surface: '#111111'
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    body {
+      background-color: #050505;
+      color: #ffffff;
+      margin: 0;
+      overflow-x: hidden;
+    }
+
+    html.lenis { height: auto; }
+    .lenis.lenis-smooth { scroll-behavior: auto; }
+    .lenis.lenis-smooth [data-lenis-prevent] { overscroll-behavior: contain; }
+    .lenis.lenis-stopped { overflow: hidden; }
+
+    .text-stroke {
+      -webkit-text-stroke: 1px rgba(255,255,255,0.35);
+      color: rgba(255,255,255,0.75);
+    }
+
+    .hero-vignette {
+      background: radial-gradient(circle at center, rgba(5,5,5,0) 0%, rgba(5,5,5,0.85) 75%, #050505 100%);
+    }
+
+    .gpu {
+      will-change: transform, opacity;
+      transform: translateZ(0);
+    }
+
+    ::-webkit-scrollbar { width: 0px; background: transparent; }
+  </style>
+</head>
+<body class="font-sans">
+
+  <!-- NAVIGATION -->
+  <nav class="fixed top-0 left-0 w-full z-50 px-6 md:px-10 py-5 flex justify-between items-center mix-blend-difference text-white">
+    <div class="flex items-center gap-3">
+      <!-- LOGO -->
+      <img src="logo-ms.png" alt="MS Nordic Automation logo" class="h-8 w-auto rounded-md shadow-lg shadow-black/40">
+      <!-- BRAND NAME -->
+      <div class="text-xl md:text-2xl font-display font-bold tracking-tight flex items-center gap-1">
+        MS Nordic<span class="hidden sm:inline"> Automation</span>
+      </div>
+    </div>
+    <div class="hidden md:flex gap-8 text-xs md:text-sm font-medium uppercase tracking-[0.2em]">
+      <a href="#solution" class="hover:text-accent transition-colors">Solution</a>
+      <a href="#industries" class="hover:text-accent transition-colors">Industries</a>
+      <a href="#numbers" class="hover:text-accent transition-colors">Impact</a>
+      <a href="#process" class="hover:text-accent transition-colors">How it works</a>
+      <a href="#contact" class="border border-white/70 px-5 py-2 rounded-full hover:bg-white hover:text-black transition-all">
+        Contact
+      </a>
+    </div>
+  </nav>
+
+  <!-- FIXED BACKGROUND -->
+  <div class="fixed inset-0 z-0 w-full h-full overflow-hidden pointer-events-none">
+    <img src="https://images.unsplash.com/photo-1550751827-4bd374c3f58b?auto=format&fit=crop&w=2500&q=80"
+         alt="Background Tech"
+         id="bg-image"
+         class="w-full h-full object-cover origin-center scale-110 opacity-60">
+    <div class="absolute inset-0 hero-vignette"></div>
+  </div>
+
+  <!-- MAIN -->
+  <main class="relative z-10 w-full">
+
+    <!-- HERO (refined & centered) -->
+    <section id="hero" class="h-screen w-full flex items-center justify-center relative">
+      <div class="px-6 md:px-10 w-full max-w-4xl mx-auto">
+        <div id="hero-text" class="text-center mx-auto flex flex-col items-center">
+
+          <!-- Badge with company + focus -->
+          <div class="inline-flex items-center gap-2 rounded-full bg-white/5 border border-white/15 px-4 py-1 mb-5 backdrop-blur">
+            <span class="h-1.5 w-1.5 rounded-full bg-emerald-400"></span>
+            <span class="text-[10px] md:text-[11px] tracking-[0.25em] uppercase text-gray-200">
+              MS Nordic Automation · For industrial operations
+            </span>
+          </div>
+
+          <!-- Main heading -->
+          <h1 class="text-4xl md:text-5xl lg:text-6xl font-display font-bold leading-tight text-white tracking-tight mb-3">
+            Document Automation<br class="hidden md:block" />
+            for Industrial Operations
+          </h1>
+
+          <!-- One-line subheading -->
+          <p class="text-sm md:text-lg text-gray-200 max-w-xl mx-auto font-normal mb-8">
+            AI that turns PDFs, emails and certificates into structured data.
+          </p>
+
+          <!-- CTA -->
+          <a
+            href="mailto:mkm@msnordicautomation.com?subject=Request%20a%20Demo%20-%20GenAI%20Document%20Automation&body=Hi%20MS%20Nordic%20Automation%2C%0D%0A%0D%0AI%27d%20like%20to%20book%20a%20demo%20of%20your%20GenAI%20document%20automation%20solution.%0D%0A%0D%0ARegards%2C%0D%0A"
+            class="group relative inline-flex h-11 md:h-12 items-center justify-center overflow-hidden rounded-full bg-white px-8 md:px-9 text-sm md:text-base font-medium text-black transition-all duration-300 hover:bg-accent hover:text-white hover:scale-[1.03] shadow-lg shadow-black/40">
+            <span class="relative">Request a Demo</span>
+          </a>
+        </div>
+      </div>
+
+      <div id="scroll-indicator" class="hidden md:flex absolute bottom-10 left-1/2 -translate-x-1/2 flex-col items-center gap-2">
+        <span class="text-[10px] uppercase tracking-[0.25em] text-white/60">Scroll</span>
+        <div class="w-[1px] h-6 bg-white/40"></div>
+      </div>
+    </section>
+
+    <!-- SOLUTION = 3 VALUE CARDS -->
+    <section id="solution" class="py-24 px-6 bg-black/90 relative">
+      <div class="max-w-5xl mx-auto text-center">
+
+        <h2 class="text-sm font-semibold tracking-[0.25em] text-accent uppercase mb-4">
+          The Solution
+        </h2>
+
+        <h3 class="text-4xl md:text-5xl font-display font-bold text-white mb-6">
+          We turn messy documents<br>into clean, reliable data.
+        </h3>
+
+        <p class="text-gray-300 text-sm md:text-base max-w-xl mx-auto mb-12">
+          Three simple promises for your operations and teams.
+        </p>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mt-10">
+
+          <!-- Save Time -->
+          <div class="flex flex-col items-start md:items-center p-6 rounded-2xl bg-surface border border-white/5 text-left md:text-center">
+            <div class="text-3xl mb-4 opacity-80">⏱️</div>
+            <h4 class="text-lg font-semibold mb-2">Save Time</h4>
+            <p class="text-gray-300 text-sm">
+              Cut 80% of manual document handling.
+            </p>
+          </div>
+
+          <!-- Reduce Errors -->
+          <div class="flex flex-col items-start md:items-center p-6 rounded-2xl bg-surface border border-white/5 text-left md:text-center">
+            <div class="text-3xl mb-4 opacity-80">✅</div>
+            <h4 class="text-lg font-semibold mb-2">Reduce Errors</h4>
+            <p class="text-gray-300 text-sm">
+              AI validation prevents wrong dates and missing fields.
+            </p>
+          </div>
+
+          <!-- Integrate Anywhere -->
+          <div class="flex flex-col items-start md:items-center p-6 rounded-2xl bg-surface border border-white/5 text-left md:text-center">
+            <div class="text-3xl mb-4 opacity-80">🔗</div>
+            <h4 class="text-lg font-semibold mb-2">Integrate Anywhere</h4>
+            <p class="text-gray-300 text-sm">
+              Data goes straight into SQL, ERP, dashboards.
+            </p>
+          </div>
+
+        </div>
+
+        <p class="text-gray-400 text-xs md:text-sm mt-10 max-w-md mx-auto">
+          No new portals for users. Just faster, cleaner, more reliable workflows.
+        </p>
+
+      </div>
+    </section>
+
+    <!-- INDUSTRIES -->
+    <section id="industries" class="py-24 px-6 bg-black/95 border-t border-white/5">
+      <div class="max-w-6xl mx-auto">
+        <div class="flex flex-col md:flex-row md:items-end md:justify-between gap-8 mb-12">
+          <div>
+            <h2 class="text-sm font-semibold tracking-[0.25em] text-accent uppercase mb-3">
+              Industries
+            </h2>
+            <h3 class="text-3xl md:text-4xl font-display font-bold">
+              Built for document-heavy industrial environments
+            </h3>
+          </div>
+          <p class="text-gray-300 max-w-xl text-sm md:text-base">
+            We focus on sectors where certificates, reports, and compliance documents are critical —
+            and where manual processing slows everything down.
+          </p>
+        </div>
+
+        <div class="grid md:grid-cols-3 gap-6">
+          <div class="border border-white/10 rounded-2xl p-6 bg-surface/80">
+            <h4 class="font-semibold mb-2">Manufacturing</h4>
+            <p class="text-xs text-gray-300">
+              Automate material certificates, calibration reports, quality documentation and supplier PDFs.
+            </p>
+          </div>
+          <div class="border border-white/10 rounded-2xl p-6 bg-surface/80">
+            <h4 class="font-semibold mb-2">Pharma &amp; Chemicals</h4>
+            <p class="text-xs text-gray-300">
+              Extract data from lab reports, validations, QA/QC documents and safety data sheets.
+            </p>
+          </div>
+          <div class="border border-white/10 rounded-2xl p-6 bg-surface/80">
+            <h4 class="font-semibold mb-2">Energy &amp; Utilities</h4>
+            <p class="text-xs text-gray-300">
+              Process inspection reports, safety documentation and maintenance certificates at scale.
+            </p>
+          </div>
+          <div class="border border-white/10 rounded-2xl p-6 bg-surface/80">
+            <h4 class="font-semibold mb-2">Logistics &amp; Ports</h4>
+            <p class="text-xs text-gray-300">
+              Automate bills of lading, customs paperwork, safety and container documentation.
+            </p>
+          </div>
+          <div class="border border-white/10 rounded-2xl p-6 bg-surface/80">
+            <h4 class="font-semibold mb-2">OEMs &amp; Equipment Suppliers</h4>
+            <p class="text-xs text-gray-300">
+              Manage CE certificates, test reports, manuals and warranty documentation effortlessly.
+            </p>
+          </div>
+          <div class="border border-white/10 rounded-2xl p-6 bg-surface/80">
+            <h4 class="font-semibold mb-2">Construction &amp; Infrastructure</h4>
+            <p class="text-xs text-gray-300">
+              Handle inspections, contractor approvals, safety documentation and as-built reports.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- IMPACT NUMBERS -->
+    <section id="numbers" class="min-h-screen w-full flex items-center justify-center relative py-20">
+      <div class="absolute inset-0 bg-gradient-to-b from-transparent via-black/80 to-black z-0"></div>
+
+      <div class="max-w-7xl mx-auto px-6 relative z-10 w-full">
+        <div class="mb-12 text-center">
+          <h2 class="text-sm font-semibold tracking-[0.25em] text-accent uppercase mb-3">
+            Impact
+          </h2>
+          <h3 class="text-3xl md:text-4xl font-display font-bold mb-3">
+            Measurable gains from automated document workflows
+          </h3>
+          <p class="text-gray-300 text-sm md:text-base max-w-2xl mx-auto">
+            Time saved. Errors reduced. Data available when you actually need it.
+          </p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-16 text-center">
+          <div class="stat-item opacity-0 translate-y-10">
+            <div class="text-6xl md:text-7xl font-display font-bold text-white mb-2 counter" data-target="80">0%</div>
+            <div class="text-accent text-xs uppercase tracking-[0.2em] font-bold mb-4">
+              Less manual handling
+            </div>
+            <p class="text-gray-300 text-sm leading-relaxed max-w-xs mx-auto">
+              Cut up to 80% of manual document handling across teams by letting AI do the repetitive work.
+            </p>
+          </div>
+
+          <div class="stat-item opacity-0 translate-y-10 delay-100">
+            <div class="text-6xl md:text-7xl font-display font-bold text-white mb-2 counter" data-target="10">0x</div>
+            <div class="text-accent text-xs uppercase tracking-[0.2em] font-bold mb-4">
+              Faster time-to-data
+            </div>
+            <p class="text-gray-300 text-sm leading-relaxed max-w-xs mx-auto">
+              Go from days of waiting for spreadsheets to minutes until clean data hits your systems.
+            </p>
+          </div>
+
+          <div class="stat-item opacity-0 translate-y-10 delay-200">
+            <div class="text-6xl md:text-7xl font-display font-bold text-white mb-2 counter" data-target="90">0%</div>
+            <div class="text-accent text-xs uppercase tracking-[0.2em] font-bold mb-4">
+              Fewer document errors
+            </div>
+            <p class="text-gray-300 text-sm leading-relaxed max-w-xs mx-auto">
+              Wrong dates, missing fields and inconsistent values are caught before they create problems.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- HOW IT WORKS – HORIZONTAL SCROLL -->
+    <section id="process" class="h-screen w-full sticky top-0 z-20 bg-black border-t border-white/5 overflow-hidden">
+      <!-- Title overlay -->
+      <div class="absolute top-10 left-1/2 -translate-x-1/2 text-center z-20 px-4">
+        <h2 class="text-sm font-semibold tracking-[0.25em] text-accent uppercase mb-2">
+          How it works
+        </h2>
+        <h3 class="text-3xl md:text-4xl font-display font-bold text-white mb-3">
+          From inbox to insight in four steps.
+        </h3>
+        <p class="text-gray-300 text-xs md:text-sm max-w-xl mx-auto">
+          Designed to save time, reduce errors, and plug straight into your existing systems.
+        </p>
+      </div>
+
+      <!-- Horizontal slides -->
+      <div class="process-container flex flex-nowrap h-full w-[400%] gpu">
+        <!-- Slide 1: Capture -->
+        <div class="process-slide w-screen h-screen flex-shrink-0 flex items-center justify-center">
+          <div class="max-w-md mx-auto p-8 rounded-3xl bg-surface/90 border border-white/10 backdrop-blur-lg text-center">
+            <div class="text-4xl mb-4 opacity-90">📥</div>
+            <h4 class="text-2xl font-display font-semibold mb-3">Capture</h4>
+            <p class="text-gray-300 text-sm md:text-base mb-4">
+              Emails, PDFs and reports are automatically collected from the tools you already use.
+            </p>
+            <span class="inline-block text-[10px] uppercase tracking-[0.2em] text-gray-400">
+              Save Time
+            </span>
+          </div>
+        </div>
+
+        <!-- Slide 2: Understand -->
+        <div class="process-slide w-screen h-screen flex-shrink-0 flex items-center justify-center">
+          <div class="max-w-md mx-auto p-8 rounded-3xl bg-surface/90 border border-white/10 backdrop-blur-lg text-center">
+            <div class="text-4xl mb-4 opacity-90">🧠</div>
+            <h4 class="text-2xl font-display font-semibold mb-3">Understand</h4>
+            <p class="text-gray-300 text-sm md:text-base mb-4">
+              GenAI reads the content — text, tables, numbers — and turns unstructured PDFs into structured data.
+            </p>
+            <span class="inline-block text-[10px] uppercase tracking-[0.2em] text-gray-400">
+              Save Time
+            </span>
+          </div>
+        </div>
+
+        <!-- Slide 3: Validate -->
+        <div class="process-slide w-screen h-screen flex-shrink-0 flex items-center justify-center">
+          <div class="max-w-md mx-auto p-8 rounded-3xl bg-surface/90 border border-white/10 backdrop-blur-lg text-center">
+            <div class="text-4xl mb-4 opacity-90">✔️</div>
+            <h4 class="text-2xl font-display font-semibold mb-3">Validate</h4>
+            <p class="text-gray-300 text-sm md:text-base mb-4">
+              Rules and AI checks prevent wrong dates, missing fields and inconsistent values before they slip through.
+            </p>
+            <span class="inline-block text-[10px] uppercase tracking-[0.2em] text-gray-400">
+              Reduce Errors
+            </span>
+          </div>
+        </div>
+
+        <!-- Slide 4: Deliver -->
+        <div class="process-slide w-screen h-screen flex-shrink-0 flex items-center justify-center">
+          <div class="max-w-md mx-auto p-8 rounded-3xl bg-surface/90 border border-white/10 backdrop-blur-lg text-center">
+            <div class="text-4xl mb-4 opacity-90">🚀</div>
+            <h4 class="text-2xl font-display font-semibold mb-3">Deliver</h4>
+            <p class="text-gray-300 text-sm md:text-base mb-4">
+              Clean data goes straight into SQL, ERP or dashboards — ready for people and systems to act on.
+            </p>
+            <span class="inline-block text-[10px] uppercase tracking-[0.2em] text-gray-400">
+              Integrate Anywhere
+            </span>
+          </div>
+        </div>
+      </div>
+
+      <p class="absolute bottom-10 left-1/2 -translate-x-1/2 text-gray-500 text-[10px] uppercase tracking-[0.2em] z-20">
+        Scroll to move through the workflow →
+      </p>
+    </section>
+
+    <!-- DEPLOYMENT -->
+    <section id="deployment" class="py-24 px-6 bg-black border-t border-white/5">
+      <div class="max-w-6xl mx-auto">
+        <div class="flex flex-col md:flex-row md:items-end md:justify-between gap-8 mb-12">
+          <div>
+            <h2 class="text-sm font-semibold tracking-[0.25em] text-accent uppercase mb-3">
+              Deployment
+            </h2>
+            <h3 class="text-3xl md:text-4xl font-display font-bold">
+              Flexible deployment for real-world industrial constraints
+            </h3>
+          </div>
+          <p class="text-gray-300 max-w-xl text-sm md:text-base">
+            Whether you operate in a highly regulated environment or a cloud-first setup, we adapt to your
+            infrastructure and security needs.
+          </p>
+        </div>
+
+        <div class="grid md:grid-cols-3 gap-6">
+          <div class="border border-white/10 rounded-2xl p-6 bg-surface/80 flex flex-col">
+            <h4 class="font-semibold mb-2">Cloud</h4>
+            <p class="text-xs text-gray-300 mb-4">
+              Fully managed in the cloud with secure integration to Microsoft 365 and your data endpoints.
+            </p>
+            <span class="mt-auto text-[11px] uppercase tracking-[0.2em] text-accent">
+              Fast start · Managed updates
+            </span>
+          </div>
+          <div class="border border-white/10 rounded-2xl p-6 bg-surface/80 flex flex-col">
+            <h4 class="font-semibold mb-2">On-Premise Enterprise</h4>
+            <p class="text-xs text-gray-300 mb-4">
+              Deployed entirely inside your network — no internet required. Ideal for secure plants and NIS2/IEC62443 environments.
+            </p>
+            <span class="mt-auto text-[11px] uppercase tracking-[0.2em] text-accent">
+              100% control · Secure by design
+            </span>
+          </div>
+          <div class="border border-white/10 rounded-2xl p-6 bg-surface/80 flex flex-col">
+            <h4 class="font-semibold mb-2">Hybrid</h4>
+            <p class="text-xs text-gray-300 mb-4">
+              Processing engine on-prem, monitoring and analytics in the cloud — the best of both worlds.
+            </p>
+            <span class="mt-auto text-[11px] uppercase tracking-[0.2em] text-accent">
+              Flexible · Scalable
+            </span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CONTACT / CTA -->
+    <section id="contact" class="py-40 px-6 bg-black text-center relative z-20 border-t border-white/10">
+      <div class="max-w-4xl mx-auto">
+        <h2 class="text-5xl md:text-7xl font-display font-bold text-white mb-8">
+          Ready to eliminate
+          <span class="block text-stroke hover:text-white transition-colors duration-500 cursor-pointer">
+            manual PDF work?
+          </span>
+        </h2>
+        <p class="text-gray-400 text-base md:text-xl mb-12">
+          Book a 60-minute discovery call. We analyse one of your real workflows and show you
+          what GenAI-powered automation could save — in hours, errors and cost.
+        </p>
+        <a
+          href="mailto:mkm@msnordicautomation.com?subject=Request%20a%20Demo%20-%20GenAI%20Document%20Automation&body=Hi%20MS%20Nordic%20Automation%2C%0D%0A%0D%0AI%27d%20like%20to%20book%20a%20demo%20of%20your%20GenAI%20document%20automation%20solution.%0D%0A%0D%0ARegards%2C%0D%0A"
+          class="group relative inline-flex h-11 md:h-12 items-center justify-center overflow-hidden rounded-full bg-white px-8 md:px-9 text-sm md:text-base font-medium text-black transition-all duration-300 hover:bg-accent hover:text-white hover:scale-[1.02] shadow-lg shadow-black/40">
+          <span class="relative">Request a Demo</span>
+        </a>
+
+        <div class="mt-32 flex flex-col md:flex-row justify-between items-center text-gray-600 text-xs md:text-sm border-t border-white/10 pt-8">
+          <div>&copy; 2025 MS Nordic Automation. All rights reserved.</div>
+          <div class="flex gap-6 mt-4 md:mt-0">
+            <a href="#" class="hover:text-white">LinkedIn</a>
+            <a href="#" class="hover:text-white">Privacy</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", function() {
+      gsap.registerPlugin(ScrollTrigger);
+
+      const lenis = new Lenis({
+        duration: 1.2,
+        easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+        smooth: true
+      });
+
+      function raf(time) {
+        lenis.raf(time);
+        requestAnimationFrame(raf);
+      }
+      requestAnimationFrame(raf);
+
+      // HERO fade
+      gsap.to("#hero-text", {
+        scrollTrigger: {
+          trigger: "#hero",
+          start: "top top",
+          end: "bottom top",
+          scrub: true
+        },
+        opacity: 0,
+        y: -40
+      });
+
+      // Background zoom
+      gsap.to("#bg-image", {
+        scrollTrigger: {
+          trigger: "body",
+          start: "top top",
+          endTrigger: "#process",
+          end: "top bottom",
+          scrub: true
+        },
+        scale: 0.7,
+        opacity: 0.4,
+        ease: "none"
+      });
+
+      // Impact numbers reveal
+      const statItems = gsap.utils.toArray('.stat-item');
+      statItems.forEach((item, i) => {
+        gsap.to(item, {
+          scrollTrigger: {
+            trigger: "#numbers",
+            start: "top 60%",
+          },
+          opacity: 1,
+          y: 0,
+          duration: 1,
+          ease: "power3.out",
+          delay: i * 0.2
+        });
+      });
+
+      // Counter animation
+      const stats = document.querySelectorAll('.counter');
+      stats.forEach(stat => {
+        const target = +stat.getAttribute('data-target');
+        const isPercent = stat.innerText.includes('%');
+        const isMultiplier = stat.innerText.includes('x');
+        const suffix = isPercent ? '%' : (isMultiplier ? 'x' : '');
+
+        ScrollTrigger.create({
+          trigger: stat,
+          start: "top 80%",
+          once: true,
+          onEnter: () => {
+            gsap.to(stat, {
+              innerHTML: target,
+              duration: 2,
+              snap: { innerHTML: 1 },
+              onUpdate: function() {
+                this.targets()[0].innerHTML = Math.ceil(this.targets()[0].innerHTML) + suffix;
+              }
+            })
+          }
+        });
+      });
+
+      // Horizontal scroll for "How it works"
+      const processContainer = document.querySelector(".process-container");
+      const slides = gsap.utils.toArray(".process-slide");
+
+      if (processContainer && slides.length > 1) {
+        gsap.to(slides, {
+          xPercent: -100 * (slides.length - 1),
+          ease: "none",
+          scrollTrigger: {
+            trigger: "#process",
+            pin: true,
+            scrub: 1,
+            end: () => "+=" + (processContainer.offsetWidth - window.innerWidth),
+            invalidateOnRefresh: true
+          }
+        });
+      }
+    });
+  </script>
+</body>
+</html>
